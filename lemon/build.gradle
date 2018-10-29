@@ -49,4 +49,12 @@ dependencies {
     api 'io.reactivex.rxjava2:rxjava:2.2.2'
     api 'io.reactivex.rxjava2:rxandroid:2.1.0'
     api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    //页面状态处理
+    api 'com.github.Bakumon:StatusLayoutManager:1.0.4'
+    //刷新加载控件
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'//没有使用特殊Header，可以不加这行
+    //adapter
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+
 }
