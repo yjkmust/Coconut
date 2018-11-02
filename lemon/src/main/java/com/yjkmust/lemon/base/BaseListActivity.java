@@ -1,13 +1,12 @@
 package com.yjkmust.lemon.base;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yjkmust.lemon.R;
 import com.yjkmust.lemon.event.ItemData;
@@ -15,7 +14,8 @@ import com.yjkmust.lemon.event.ItemData;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecycleFragment<T> {
+public abstract class BaseListActivity<T extends AbsViewModel>  extends AbsLifecycleActivity<T> {
+
     protected SmartRefreshLayout smartRefreshLayout;
     protected RecyclerView recyclerView;
     protected RecyclerView.Adapter adapter;
@@ -28,10 +28,10 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
     protected boolean isRefresh = false;
 
     @Override
-    public void initView(Bundle state) {
-        super.initView(state);
-        smartRefreshLayout = getViewById(R.id.smart_refresh);
-        recyclerView = getViewById(R.id.recycler_view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        smartRefreshLayout = findViewById(R.id.smart_refresh);
+        recyclerView = findViewById(R.id.recycler_view);
         oldItems = new ItemData();
         newItems = new ItemData();
         adapter = createAdater(oldItems);
@@ -54,15 +54,10 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
     }
 
     @Override
-    public int getLayoutResId() {
-        return R.layout.fragment_list;
+    public int getLayoutId() {
+        return R.layout.activity_base_list;
     }
 
-    @Override
-    protected void lazyLoad() {
-        super.lazyLoad();
-        isLoadMore = false;
-    }
     protected void setData(List<?> collection) {
         if (isLoadMore) {
             onLoadMoreSuccess(collection);
@@ -77,7 +72,7 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
         smartRefreshLayout.finishRefresh();
         adapter.notifyDataSetChanged();
         if (collection.size() < 20) {
-          smartRefreshLayout.finishLoadMoreWithNoMoreData();
+            smartRefreshLayout.finishLoadMoreWithNoMoreData();
         } else {
 //            mRecyclerView.loadMoreComplete(collection,false);
         }
@@ -97,7 +92,9 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
         adapter.notifyDataSetChanged();
     }
 
-    protected abstract RecyclerView.LayoutManager createLayoutManager();
-    protected abstract RecyclerView.Adapter createAdater(List<Object> list);
 
+
+    protected abstract RecyclerView.LayoutManager createLayoutManager() ;
+
+    protected abstract RecyclerView.Adapter createAdater(List<Object> list);
 }

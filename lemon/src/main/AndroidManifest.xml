@@ -3,7 +3,8 @@
     package="com.yjkmust.lemon">
 
     <application>
-        <activity android:name=".base.BaseActivity"></activity>
+        <activity android:name=".base.BaseActivity" />
+        <activity android:name=".base.BaseListActivity"></activity>
     </application>
 
 </manifest>

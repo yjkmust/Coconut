@@ -1,9 +1,11 @@
 package com.yjkmust.lemon.base;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.yjkmust.lemon.R;
@@ -12,6 +14,7 @@ import me.bakumon.statuslayoutmanager.library.OnStatusChildClickListener;
 import me.bakumon.statuslayoutmanager.library.StatusLayoutManager;
 
 public abstract class BaseActivity extends AppCompatActivity {
+    protected View rootView;
 
     protected StatusLayoutManager statusLayoutManager;
     protected RecyclerView recyclerView;
@@ -29,7 +32,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         //初始化ToolBar
         initStatusLayout();
 
+
     }
+
+
     /**
      *
      */
@@ -41,6 +47,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initStatusBar() {
 
     }
+    /**
+     * 初始化toolbar
+     */
+    protected void initToolBar() {
+        //doSomething
+    }
+
+    protected void getNetData(){}
+
 
 
 
@@ -58,12 +73,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public abstract void initViews(Bundle savedInstanceState);
 
-    /**
-     * 初始化toolbar
-     */
-    protected void initToolBar() {
-        //doSomething
-    }
 
 
     /**
@@ -131,6 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onEmptyClick(){}
     protected void onErrorClick(){}
     protected void onCustomerClick(){}
+
 
 
 
