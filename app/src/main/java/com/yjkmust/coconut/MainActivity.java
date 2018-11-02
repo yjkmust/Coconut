@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = TestActivity.newIntent(MainActivity.this);
                 startActivity(intent);
-
             }
         });
     }
