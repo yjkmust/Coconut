@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.yjkmust.coconut.R;
 import com.yjkmust.core.vm.WorkViewModel;
+import com.yjkmust.lemon.base.AbsLifecycleActivity;
 import com.yjkmust.lemon.base.BaseListActivity;
 
 import java.util.List;
@@ -28,6 +29,19 @@ public class TestActivity extends BaseListActivity<WorkViewModel> {
     }
 
     @Override
+    public void initViews(Bundle savedInstanceState) {
+        super.initViews(savedInstanceState);
+        smartRefreshLayout = findViewById(R.id.smart_refresh);
+        recyclerView = findViewById(R.id.recycler_view);
+    }
+
+    @Override
+    protected void getNetData() {
+        super.getNetData();
+        mViewModel.getWorkListData();
+    }
+
+    @Override
     public int getLayoutId() {
         return R.layout.activity_test;
     }
@@ -42,8 +56,9 @@ public class TestActivity extends BaseListActivity<WorkViewModel> {
         return null;
     }
 
+
     @Override
     protected Object getStateEventKey() {
-        return null;
+        return "123";
     }
 }

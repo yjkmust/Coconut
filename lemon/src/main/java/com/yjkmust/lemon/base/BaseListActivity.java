@@ -28,10 +28,15 @@ public abstract class BaseListActivity<T extends AbsViewModel>  extends AbsLifec
     protected boolean isRefresh = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void initViews(Bundle savedInstanceState) {
+        super.initViews(savedInstanceState);
         smartRefreshLayout = findViewById(R.id.smart_refresh);
         recyclerView = findViewById(R.id.recycler_view);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         oldItems = new ItemData();
         newItems = new ItemData();
         adapter = createAdater(oldItems);

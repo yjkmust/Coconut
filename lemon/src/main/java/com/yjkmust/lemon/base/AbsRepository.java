@@ -14,7 +14,7 @@ public abstract class AbsRepository {
 
     }
 
-    protected void addDisposable(void disposable) {
+    protected void addDisposable(Disposable disposable) {
         if (mCompositeDisposable == null) {
             mCompositeDisposable = new CompositeDisposable();
         }

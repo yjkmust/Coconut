@@ -31,6 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initViews(savedInstanceState);
         //初始化ToolBar
         initStatusLayout();
+        getNetData();
 
 
     }
@@ -88,6 +89,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
     protected void initStatusLayout(){
+        if (recyclerView==null){
+            recyclerView = new RecyclerView(getApplication());
+        }
         statusLayoutManager = new StatusLayoutManager.Builder(recyclerView)
 
                 // 设置默认加载中布局的提示文本

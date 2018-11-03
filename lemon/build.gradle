@@ -22,12 +22,16 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    api 'com.android.support:appcompat-v7:27.1.1'
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
+    api 'com.android.support:appcompat-v7:27.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -53,8 +57,8 @@ dependencies {
     api 'com.github.Bakumon:StatusLayoutManager:1.0.4'
     //刷新加载控件
     api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
-    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'//没有使用特殊Header，可以不加这行
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'
+    //没有使用特殊Header，可以不加这行
     //adapter
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-
 }
