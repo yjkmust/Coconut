@@ -47,7 +47,6 @@ public class TestActivity extends BaseListActivity<WorkViewModel> {
             if (worksListVo != null) {
                 lastId = worksListVo.data.content.get(worksListVo.data.content.size() - 1).tid;
                 setData(worksListVo.data.content);
-
             }
 
         });
