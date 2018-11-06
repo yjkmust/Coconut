@@ -11,35 +11,32 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yjkmust.lemon.R;
 import com.yjkmust.lemon.event.ItemData;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class BaseListActivity<T extends AbsViewModel>  extends AbsLifecycleActivity<T> {
+public abstract class BaseListActivity<T extends AbsViewModel,V>  extends AbsLifecycleActivity<T> {
 
     protected SmartRefreshLayout smartRefreshLayout;
     protected RecyclerView recyclerView;
     protected RecyclerView.Adapter adapter;
     protected RecyclerView.LayoutManager layoutManager;
-    protected ItemData oldItems;
-    protected ItemData newItems;
+//    protected ItemData oldItems;
+//    protected ItemData newItems;
     protected String lastId = null;
-    protected boolean isLoadMore = true;
+    protected boolean isLoadMore = false;
     protected boolean isLoading = true;
     protected boolean isRefresh = false;
-
-    @Override
-    public void initViews(Bundle savedInstanceState) {
-        super.initViews(savedInstanceState);
-        smartRefreshLayout = findViewById(R.id.smart_refresh);
-        recyclerView = findViewById(R.id.recycler_view);
-    }
+    protected List<V> listOld = new ArrayList<>();
+    protected List<V> listNew = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        oldItems = new ItemData();
-        newItems = new ItemData();
-        adapter = createAdater(oldItems);
+//        oldItems = new ItemData();
+//        newItems = new ItemData();
+        adapter = createAdater(listOld);
+        layoutManager = createLayoutManager();
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -63,17 +60,43 @@ public abstract class BaseListActivity<T extends AbsViewModel>  extends AbsLifec
         return R.layout.activity_base_list;
     }
 
-    protected void setData(List<?> collection) {
+    protected void setData(List<V> collection) {
         if (isLoadMore) {
             onLoadMoreSuccess(collection);
         } else {
             onRefreshSuccess(collection);
         }
     }
-    protected void onRefreshSuccess(Collection<?> collection) {
-        newItems.addAll(collection);
-        oldItems.clear();
-        oldItems.addAll(newItems);
+//    protected void onRefreshSuccess(Collection<?> collection) {
+//        newItems.addAll(collection);
+//        oldItems.clear();
+//        oldItems.addAll(newItems);
+//        smartRefreshLayout.finishRefresh();
+//        adapter.notifyDataSetChanged();
+//        if (collection.size() < 20) {
+//            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+//        } else {
+////            mRecyclerView.loadMoreComplete(collection,false);
+//        }
+//        isRefresh = false;
+//    }
+//
+//    protected void onLoadMoreSuccess(List<?> collection) {
+//        isLoading = true;
+//        isLoadMore = false;
+//        oldItems.addAll(collection);
+//        if (collection.size() < 20) {
+//            smartRefreshLayout.finishLoadMoreWithNoMoreData();
+//        } else {
+////            mRecyclerView.loadMoreComplete(collection,false);
+//        }
+//        smartRefreshLayout.finishLoadMore();
+//        adapter.notifyDataSetChanged();
+//    }
+
+    protected void onRefreshSuccess(List<V> collection) {
+        listOld.clear();
+        listOld.addAll(collection);
         smartRefreshLayout.finishRefresh();
         adapter.notifyDataSetChanged();
         if (collection.size() < 20) {
@@ -84,10 +107,10 @@ public abstract class BaseListActivity<T extends AbsViewModel>  extends AbsLifec
         isRefresh = false;
     }
 
-    protected void onLoadMoreSuccess(List<?> collection) {
+    protected void onLoadMoreSuccess(List<V> collection) {
         isLoading = true;
         isLoadMore = false;
-        oldItems.addAll(collection);
+        listOld.addAll(collection);
         if (collection.size() < 20) {
             smartRefreshLayout.finishLoadMoreWithNoMoreData();
         } else {
@@ -101,5 +124,5 @@ public abstract class BaseListActivity<T extends AbsViewModel>  extends AbsLifec
 
     protected abstract RecyclerView.LayoutManager createLayoutManager() ;
 
-    protected abstract RecyclerView.Adapter createAdater(List<Object> list);
+    protected abstract RecyclerView.Adapter createAdater(List<V> list);
 }

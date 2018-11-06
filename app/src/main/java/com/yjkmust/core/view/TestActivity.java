@@ -4,8 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.yjkmust.coconut.R;
 import com.yjkmust.config.Constants;
 import com.yjkmust.core.data.WorksListVo;
@@ -15,7 +21,7 @@ import com.yjkmust.lemon.base.BaseListActivity;
 
 import java.util.List;
 
-public class TestActivity extends BaseListActivity<WorkViewModel> {
+public class TestActivity extends BaseListActivity<WorkViewModel,WorksListVo.Works> {
 
     public static Intent newIntent(Context context){
         Intent intent = new Intent(context,TestActivity.class);
@@ -54,12 +60,12 @@ public class TestActivity extends BaseListActivity<WorkViewModel> {
 
     @Override
     protected RecyclerView.LayoutManager createLayoutManager() {
-        return null;
+        return new LinearLayoutManager(getApplicationContext());
     }
 
     @Override
-    protected RecyclerView.Adapter createAdater(List<Object> list) {
-        return null;
+    protected RecyclerView.Adapter createAdater(List<WorksListVo.Works> list) {
+        return new TestAdapter(list);
     }
 
 
@@ -67,4 +73,18 @@ public class TestActivity extends BaseListActivity<WorkViewModel> {
     protected Object getStateEventKey() {
         return "123";
     }
+
+    class TestAdapter extends BaseQuickAdapter<WorksListVo.Works,BaseViewHolder>{
+
+        public TestAdapter(@Nullable List<WorksListVo.Works> data) {
+            super(R.layout.layout_test_item,data);
+        }
+
+        @Override
+        protected void convert(BaseViewHolder helper, WorksListVo.Works item) {
+            Glide.with(mContext).load(item.avatar).into((ImageView) helper.getView(R.id.iv_test));
+            helper.setText(R.id.txt_test,item.content);
+        }
+    }
+
 }
