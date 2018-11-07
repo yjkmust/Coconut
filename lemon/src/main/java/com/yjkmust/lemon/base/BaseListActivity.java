@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
-import com.yjkmust.lemon.R;
 
 import java.util.ArrayList;
 import java.util.List;
