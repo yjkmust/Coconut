@@ -12,8 +12,12 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yjkmust.lemon.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 public abstract class BaseListActivity<T extends AbsViewModel,V>  extends AbsLifecycleActivity<T> {
     protected RecyclerView recyclerView;
@@ -97,6 +101,9 @@ public abstract class BaseListActivity<T extends AbsViewModel,V>  extends AbsLif
     protected void initSmartRefreshLayout(){
         ClassicsHeader header = (ClassicsHeader) smartRefreshLayout.getRefreshHeader();
         ClassicsFooter footer  = (ClassicsFooter) smartRefreshLayout.getRefreshFooter();
+        int delta = new Random().nextInt(7 * 24 * 60 * 60 * 1000);
+        header.setLastUpdateTime(new Date(System.currentTimeMillis()-delta));
+        header.setTimeFormat(new SimpleDateFormat("更新于 MM-dd HH:mm", Locale.CHINA));
         header.REFRESH_HEADER_PULLING = "下拉可以刷新";
         header.REFRESH_HEADER_REFRESHING = "正在刷新...";
         header.REFRESH_HEADER_LOADING = "正在加载...";
