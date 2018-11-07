@@ -79,6 +79,7 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
 //            mRecyclerView.loadMoreComplete(collection,false);
         }
         isRefresh = false;
+
     }
 
     protected void onLoadMoreSuccess(List<?> collection) {
