@@ -109,13 +109,13 @@ public abstract class AbsLifecycleActivity<T extends AbsViewModel> extends BaseA
         public void onChanged(@Nullable String state) {
             if (!TextUtils.isEmpty(state)) {
                 if (StateConstants.ERROR_STATE.equals(state)) {
-                    showError();
+                    mPageLayout.showError();
                 } else if (StateConstants.EMPTY_STATE.equals(state)) {
-                    showEmpty();
+                    mPageLayout.showEmpty();
                 } else if (StateConstants.LOADING_STATE.equals(state)) {
-                    showLoading();
+                    mPageLayout.showLoading();
                 } else if (StateConstants.SUCCESS_STATE.equals(state)) {
-                    showSuccess();
+                    mPageLayout.hide();
                 }
             }
         }

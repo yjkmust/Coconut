@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +21,7 @@ import com.yjkmust.core.data.WorksListVo;
 import com.yjkmust.core.vm.WorkViewModel;
 import com.yjkmust.lemon.base.AbsLifecycleActivity;
 import com.yjkmust.lemon.base.BaseListActivity;
+import com.yjkmust.lemon.view.PagingLayout.PageLayout;
 
 import java.util.List;
 
@@ -34,7 +38,11 @@ public class TestActivity extends BaseListActivity<WorkViewModel,WorksListVo.Wor
         super.initViews(savedInstanceState);
         smartRefreshLayout = findViewById(R.id.smart_refresh);
         recyclerView = findViewById(R.id.recycler_view);
+        rootView = findViewById(R.id.ll_root);
+        customView = LayoutInflater.from(this)
+                .inflate(R.layout.activity_test, null);
     }
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_test;

@@ -56,8 +56,10 @@ public abstract class BaseListActivity<T extends AbsViewModel,V>  extends AbsLif
     protected void setData(List<V> collection) {
         if (isLoadMore) {
             onLoadMoreSuccess(collection);
+            mPageLayout.hide();
         } else {
             onRefreshSuccess(collection);
+            mPageLayout.hide();
         }
     //导入错误页面处理前
     }

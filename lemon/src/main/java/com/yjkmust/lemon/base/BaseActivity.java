@@ -4,9 +4,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.yjkmust.lemon.R;
+import com.yjkmust.lemon.view.PagingLayout.PageLayout;
 
 import me.bakumon.statuslayoutmanager.library.OnStatusChildClickListener;
 import me.bakumon.statuslayoutmanager.library.StatusLayoutManager;
@@ -15,6 +17,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected boolean firstLoad = true;
     protected StatusLayoutManager statusLayoutManager;
     protected RecyclerView recyclerView;
+    protected View rootView;
+    protected View customView;
+    protected PageLayout mPageLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +34,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         //初始化ToolBar
         initStatusLayout();
         if (firstLoad){
-//            statusLayoutManager.showLoadingLayout();
-//            lazyLoad();
+            mPageLayout.showLoading();
+            lazyLoad();
             firstLoad = false;
         }
-        statusLayoutManager.showLoadingLayout();
-//        statusLayoutManager.showEmptyLayout();
+
     }
 
 
@@ -93,61 +97,24 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
     protected void initStatusLayout(){
-        if (recyclerView==null){
-            recyclerView = new RecyclerView(getApplication());
-        }
-        statusLayoutManager = new StatusLayoutManager.Builder(recyclerView)
-
-                // 设置默认加载中布局的提示文本
-                .setDefaultLoadingText("l拼命加载中...")
-
-                // 设置默认空数据布局的提示文本
-                .setDefaultEmptyText("空白了，哈哈哈哈")
-                // 设置默认空数据布局的图片
-                .setDefaultEmptyImg(R.drawable.empty_server)
-                // 设置默认空数据布局重试按钮的文本
-                .setDefaultEmptyClickViewText("retry")
-                // 设置默认空数据布局重试按钮的文本颜色
-                .setDefaultEmptyClickViewTextColor(getResources().getColor(R.color.colorAccent))
-                // 设置默认空数据布局重试按钮是否显示
-                .setDefaultEmptyClickViewVisible(false)
-
-                // 设置默认出错布局的提示文本
-                .setDefaultErrorText(R.string.app_name)
-                // 设置默认出错布局的图片
-                .setDefaultErrorImg(R.drawable.empty_network)
-                // 设置默认出错布局重试按钮的文本
-                .setDefaultErrorClickViewText("重试一波")
-                // 设置默认出错布局重试按钮的文本颜色
-                .setDefaultErrorClickViewTextColor(getResources().getColor(R.color.colorPrimaryDark))
-                // 设置默认出错布局重试按钮是否显示
-                .setDefaultErrorClickViewVisible(true)
-
-                // 设置默认布局背景，包括加载中、空数据和出错布局
-                .setDefaultLayoutsBackgroundColor(Color.WHITE)
-                .setOnStatusChildClickListener(new OnStatusChildClickListener() {
+        mPageLayout = new PageLayout.Builder(this)
+                .initPage(rootView)
+                .setCustomView(customView)
+                .setEmptyDrawable(R.drawable.pic_empty)
+                .setErrorDrawable(R.drawable.pic_error)
+                .setOnRetryListener(new PageLayout.OnRetryClickListener() {
                     @Override
-                    public void onEmptyChildClick(View view) {
-                        onEmptyClick();
-                    }
-
-                    @Override
-                    public void onErrorChildClick(View view) {
-                        onErrorClick();
-
-                    }
-
-                    @Override
-                    public void onCustomerChildClick(View view) {
-                        onCustomerClick();
-
+                    public void onRetry() {
+                        getNetData();
                     }
                 })
-                .build();
+//                .setLoadingText("Loading")
+                .create();
     }
     protected void onEmptyClick(){}
     protected void onErrorClick(){}
     protected void onCustomerClick(){}
+
 
 
 
