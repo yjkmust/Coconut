@@ -59,7 +59,7 @@ public abstract class BaseListActivity<T extends AbsViewModel,V>  extends AbsLif
         } else {
             onRefreshSuccess(collection);
         }
-
+    //导入错误页面处理前
     }
 
     protected void onRefreshSuccess(List<V> collection) {
