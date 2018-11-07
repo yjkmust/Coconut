@@ -86,10 +86,7 @@ public abstract class AbsLifecycleFragment<T extends AbsViewModel> extends BaseF
     }
 
 
-    @Override
-    protected void onStateRefresh() {
-        showLoading();
-    }
+
 
 
     /**
@@ -98,33 +95,19 @@ public abstract class AbsLifecycleFragment<T extends AbsViewModel> extends BaseF
     protected void getRemoteData() {
 
     }
-    protected void showError() {
-        statusLayoutManager.showEmptyLayout();
-    }
-    protected void showEmpty(){
-        statusLayoutManager.showEmptyLayout();
-    }
 
-
-    protected void showSuccess() {
-        statusLayoutManager.showSuccessLayout();
-    }
-
-    protected void showLoading() {
-        statusLayoutManager.showLoadingLayout();
-    }
     protected Observer observer = new Observer<String>() {
         @Override
         public void onChanged(@Nullable String state) {
             if (!TextUtils.isEmpty(state)) {
                 if (StateConstants.ERROR_STATE.equals(state)) {
-                    showError();
+                    mPageLayout.showError();
                 } else if (StateConstants.EMPTY_STATE.equals(state)) {
-                    showEmpty();
+                    mPageLayout.showEmpty();
                 } else if (StateConstants.LOADING_STATE.equals(state)) {
-                    showLoading();
+                    mPageLayout.showLoading();
                 } else if (StateConstants.SUCCESS_STATE.equals(state)) {
-                    showSuccess();
+                    mPageLayout.hide();
                 }
             }
         }

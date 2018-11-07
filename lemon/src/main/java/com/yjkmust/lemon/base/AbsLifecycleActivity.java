@@ -78,25 +78,6 @@ public abstract class AbsLifecycleActivity<T extends AbsViewModel> extends BaseA
     }
 
 
-    @Override
-    protected void onStateRefresh() {
-        showLoading();
-    }
-
-    protected void showError() {
-        statusLayoutManager.showEmptyLayout();
-    }
-    protected void showEmpty(){
-        statusLayoutManager.showEmptyLayout();
-    }
-
-    protected void showSuccess() {
-        statusLayoutManager.showSuccessLayout();
-    }
-
-    protected void showLoading() {
-        statusLayoutManager.showLoadingLayout();
-    }
 
 
 

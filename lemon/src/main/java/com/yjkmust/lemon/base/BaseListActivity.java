@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseListActivity<T extends AbsViewModel,V>  extends AbsLifecycleActivity<T> {
+    protected RecyclerView recyclerView;
     protected SmartRefreshLayout smartRefreshLayout;
     protected RecyclerView.Adapter adapter;
     protected RecyclerView.LayoutManager layoutManager;

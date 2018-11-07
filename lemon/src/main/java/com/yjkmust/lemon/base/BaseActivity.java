@@ -15,8 +15,6 @@ import me.bakumon.statuslayoutmanager.library.StatusLayoutManager;
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected boolean firstLoad = true;
-    protected StatusLayoutManager statusLayoutManager;
-    protected RecyclerView recyclerView;
     protected View rootView;
     protected View customView;
     protected PageLayout mPageLayout;
@@ -41,13 +39,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-
-    /**
-     *
-     */
-    protected  void onStateRefresh(){
-
-    }
 
 
     protected void initStatusBar() {
@@ -111,9 +102,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                .setLoadingText("Loading")
                 .create();
     }
-    protected void onEmptyClick(){}
-    protected void onErrorClick(){}
-    protected void onCustomerClick(){}
+
 
 
 

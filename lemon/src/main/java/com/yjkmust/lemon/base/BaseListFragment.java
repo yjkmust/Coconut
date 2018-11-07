@@ -10,43 +10,44 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yjkmust.lemon.R;
 import com.yjkmust.lemon.event.ItemData;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecycleFragment<T> {
+public abstract class BaseListFragment<T extends AbsViewModel,V> extends AbsLifecycleFragment<T> {
     protected SmartRefreshLayout smartRefreshLayout;
     protected RecyclerView recyclerView;
     protected RecyclerView.Adapter adapter;
     protected RecyclerView.LayoutManager layoutManager;
-    protected ItemData oldItems;
-    protected ItemData newItems;
     protected String lastId = null;
     protected boolean isLoadMore = true;
     protected boolean isLoading = true;
     protected boolean isRefresh = false;
+    protected List<V> list = new ArrayList<>();
 
     @Override
     public void initView(Bundle state) {
         super.initView(state);
         smartRefreshLayout = getViewById(R.id.smart_refresh);
         recyclerView = getViewById(R.id.recycler_view);
-        oldItems = new ItemData();
-        newItems = new ItemData();
-        adapter = createAdater(oldItems);
+        rootView = getViewById(R.id.ll_root);
+        layoutManager = createLayoutManager();
+        adapter = createAdater(list);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                isRefresh = false;
-                isLoadMore = true;
-            }
-
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 lastId = null;
                 isRefresh = true;
                 isLoadMore = false;
+                getNetData();
+            }
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                isRefresh = false;
+                isLoadMore = true;
+                getMoreNetData();
             }
         });
     }
@@ -60,18 +61,20 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
     protected void lazyLoad() {
         super.lazyLoad();
         isLoadMore = false;
+        mPageLayout.showLoading();
     }
-    protected void setData(List<?> collection) {
+    protected void setData(List<V> collection) {
         if (isLoadMore) {
             onLoadMoreSuccess(collection);
+            mPageLayout.hide();
         } else {
             onRefreshSuccess(collection);
+            mPageLayout.hide();
         }
     }
-    protected void onRefreshSuccess(Collection<?> collection) {
-        newItems.addAll(collection);
-        oldItems.clear();
-        oldItems.addAll(newItems);
+    protected void onRefreshSuccess(List<V> collection) {
+        list.clear();
+        list.addAll(collection);
         smartRefreshLayout.finishRefresh();
         adapter.notifyDataSetChanged();
         if (collection.size() < 20) {
@@ -83,10 +86,10 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
 
     }
 
-    protected void onLoadMoreSuccess(List<?> collection) {
-        isLoading = true;
+    protected void onLoadMoreSuccess(List<V> collection) {
+
         isLoadMore = false;
-        oldItems.addAll(collection);
+        list.addAll(collection);
         if (collection.size() < 20) {
             smartRefreshLayout.finishLoadMoreWithNoMoreData();
         } else {
@@ -97,6 +100,6 @@ public abstract class BaseListFragment<T extends AbsViewModel> extends AbsLifecy
     }
 
     protected abstract RecyclerView.LayoutManager createLayoutManager();
-    protected abstract RecyclerView.Adapter createAdater(List<Object> list);
+    protected abstract RecyclerView.Adapter createAdater(List<V> list);
 
 }

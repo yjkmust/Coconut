@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.yjkmust.lemon.R;
+import com.yjkmust.lemon.view.PagingLayout.PageLayout;
 
 import me.bakumon.statuslayoutmanager.library.OnStatusChildClickListener;
 import me.bakumon.statuslayoutmanager.library.StatusLayoutManager;
@@ -20,69 +22,19 @@ import me.bakumon.statuslayoutmanager.library.StatusLayoutManager;
  * @author：tqzhang on 18/3/12 19:25
  */
 public abstract class BaseFragment extends Fragment {
-    private View rootView;
-
     protected FragmentActivity activity;
-
-    protected StatusLayoutManager statusLayoutManager;
-
-    protected RecyclerView recyclerView;
+    protected View rootView;
+    protected View customView;
+    protected PageLayout mPageLayout;
+    protected boolean firstLoad = true;
 
     protected boolean mIsFirstVisible = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
-        rootView = inflater.inflate(getLayoutResId(), null, false);
-        statusLayoutManager = new StatusLayoutManager.Builder(recyclerView)
-
-                // 设置默认加载中布局的提示文本
-                .setDefaultLoadingText("l拼命加载中...")
-
-                // 设置默认空数据布局的提示文本
-                .setDefaultEmptyText("空白了，哈哈哈哈")
-                // 设置默认空数据布局的图片
-                .setDefaultEmptyImg(R.drawable.empty_server)
-                // 设置默认空数据布局重试按钮的文本
-                .setDefaultEmptyClickViewText("retry")
-                // 设置默认空数据布局重试按钮的文本颜色
-                .setDefaultEmptyClickViewTextColor(getResources().getColor(R.color.colorAccent))
-                // 设置默认空数据布局重试按钮是否显示
-                .setDefaultEmptyClickViewVisible(false)
-
-                // 设置默认出错布局的提示文本
-                .setDefaultErrorText(R.string.app_name)
-                // 设置默认出错布局的图片
-                .setDefaultErrorImg(R.drawable.empty_network)
-                // 设置默认出错布局重试按钮的文本
-                .setDefaultErrorClickViewText("重试一波")
-                // 设置默认出错布局重试按钮的文本颜色
-                .setDefaultErrorClickViewTextColor(getResources().getColor(R.color.colorPrimaryDark))
-                // 设置默认出错布局重试按钮是否显示
-                .setDefaultErrorClickViewVisible(true)
-
-                // 设置默认布局背景，包括加载中、空数据和出错布局
-                .setDefaultLayoutsBackgroundColor(Color.WHITE)
-                .setOnStatusChildClickListener(new OnStatusChildClickListener() {
-                    @Override
-                    public void onEmptyChildClick(View view) {
-                        onEmptyClick();
-                    }
-
-                    @Override
-                    public void onErrorChildClick(View view) {
-                        onErrorClick();
-
-                    }
-
-                    @Override
-                    public void onCustomerChildClick(View view) {
-                        onCustomerClick();
-
-                    }
-                })
-                .build();
+        customView = inflater.inflate(getLayoutResId(), null, false);
         initView(state);
-        return rootView;
+        return customView;
     }
 
 
@@ -90,10 +42,12 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         boolean isVis = isHidden() || getUserVisibleHint();
+        initStatusLayout();
         if (isVis && mIsFirstVisible) {
             lazyLoad();
             mIsFirstVisible = false;
         }
+
     }
 
 
@@ -111,10 +65,7 @@ public abstract class BaseFragment extends Fragment {
      */
     public abstract void initView(Bundle state);
 
-    /**
-     *
-     */
-    protected abstract void onStateRefresh();
+
 
 
     @Override
@@ -146,7 +97,20 @@ public abstract class BaseFragment extends Fragment {
             mIsFirstVisible = false;
         }
     }
-
+    protected void initStatusLayout(){
+        mPageLayout = new PageLayout.Builder(getContext())
+                .initPage(rootView)
+                .setCustomView(customView)
+                .setErrorDrawable(R.drawable.pic_error)
+                .setEmptyDrawable(R.drawable.pic_empty)
+                .setOnRetryListener(new PageLayout.OnRetryClickListener() {
+                    @Override
+                    public void onRetry() {
+                        getNetData();
+                    }
+                })
+                .create();
+    }
     /**
      * 数据懒加载
      */
@@ -182,10 +146,12 @@ public abstract class BaseFragment extends Fragment {
         super.onDetach();
         this.activity = null;
     }
+    protected void getNetData(){}
+    protected void getMoreNetData(){}
 
     @SuppressWarnings("unchecked")
     protected <T extends View> T getViewById(int id) {
-        return (T) rootView.findViewById(id);
+        return (T) customView.findViewById(id);
     }
 
 
