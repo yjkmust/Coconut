@@ -87,7 +87,6 @@ public abstract class BaseListFragment<T extends AbsViewModel,V> extends AbsLife
     }
 
     protected void onLoadMoreSuccess(List<V> collection) {
-
         isLoadMore = false;
         list.addAll(collection);
         if (collection.size() < 20) {

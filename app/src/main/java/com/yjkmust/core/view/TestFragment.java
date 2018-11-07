@@ -37,7 +37,7 @@ public class TestFragment extends BaseListFragment<WorkViewModel,WorksListVo.Wor
     @Override
     protected void getMoreNetData() {
         super.getMoreNetData();
-        mViewModel.getWorkMoreData();
+        mViewModel.getWorkListData();
     }
 
     @Override

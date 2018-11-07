@@ -60,6 +60,12 @@ public class TestActivity extends BaseListActivity<WorkViewModel,WorksListVo.Wor
     }
 
     @Override
+    protected void getMoreNetData() {
+        super.getMoreNetData();
+        mViewModel.getWorkListData();
+    }
+
+    @Override
     protected void dataObserver() {
         super.dataObserver();
 
