@@ -1,11 +1,9 @@
 package com.yjkmust.lemon.base;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.View;
 
 import com.yjkmust.lemon.R;
@@ -14,8 +12,7 @@ import me.bakumon.statuslayoutmanager.library.OnStatusChildClickListener;
 import me.bakumon.statuslayoutmanager.library.StatusLayoutManager;
 
 public abstract class BaseActivity extends AppCompatActivity {
-    protected View rootView;
-
+    protected boolean firstLoad = true;
     protected StatusLayoutManager statusLayoutManager;
     protected RecyclerView recyclerView;
 
@@ -31,9 +28,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         initViews(savedInstanceState);
         //初始化ToolBar
         initStatusLayout();
-        getNetData();
-
-
+        if (firstLoad){
+//            statusLayoutManager.showLoadingLayout();
+//            lazyLoad();
+            firstLoad = false;
+        }
+        statusLayoutManager.showLoadingLayout();
+//        statusLayoutManager.showEmptyLayout();
     }
 
 
@@ -54,8 +55,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initToolBar() {
         //doSomething
     }
+    protected void lazyLoad(){}
 
     protected void getNetData(){}
+
+    protected void getMoreNetData(){}
 
 
 

@@ -10,8 +10,6 @@ import android.text.TextUtils;
 
 import com.yjkmust.lemon.util.Tutil;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 

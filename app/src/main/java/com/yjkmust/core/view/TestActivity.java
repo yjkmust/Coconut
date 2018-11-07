@@ -39,9 +39,15 @@ public class TestActivity extends BaseListActivity<WorkViewModel,WorksListVo.Wor
     public int getLayoutId() {
         return R.layout.activity_test;
     }
+
+    @Override
+    protected void lazyLoad() {
+        super.lazyLoad();
+        mViewModel.getWorkListData();
+    }
+
     @Override
     protected void getNetData() {
-        super.getNetData();
         mViewModel.getWorkListData();
     }
 
