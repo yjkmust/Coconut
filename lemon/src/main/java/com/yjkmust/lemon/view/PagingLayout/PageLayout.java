@@ -237,7 +237,6 @@ public class PageLayout extends FrameLayout {
          * 自定义布局
          */
         public Builder setCustomView(View view) {
-//            mPageLayout.removeAllViews();
             if (view != null) {
                 ViewGroup parentViewGroup = (ViewGroup) view.getParent();
                 if (parentViewGroup != null ) {
