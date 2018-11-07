@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.yjkmust.lemon.R;
 import com.yjkmust.lemon.event.ItemData;
@@ -50,6 +52,7 @@ public abstract class BaseListFragment<T extends AbsViewModel,V> extends AbsLife
                 getMoreNetData();
             }
         });
+        initSmartRefreshLayout();
     }
 
     @Override
@@ -96,6 +99,26 @@ public abstract class BaseListFragment<T extends AbsViewModel,V> extends AbsLife
         }
         smartRefreshLayout.finishLoadMore();
         adapter.notifyDataSetChanged();
+    }
+    protected void initSmartRefreshLayout(){
+        ClassicsHeader header = (ClassicsHeader) smartRefreshLayout.getRefreshHeader();
+        ClassicsFooter footer  = (ClassicsFooter) smartRefreshLayout.getRefreshFooter();
+        header.REFRESH_HEADER_PULLING = "下拉可以刷新";
+        header.REFRESH_HEADER_REFRESHING = "正在刷新...";
+        header.REFRESH_HEADER_LOADING = "正在加载...";
+        header.REFRESH_HEADER_RELEASE = "释放立即刷新";
+        header.REFRESH_HEADER_FINISH = "刷新完成";
+        header.REFRESH_HEADER_FAILED = "刷新失败";
+        header.REFRESH_HEADER_UPDATE = "上次更新 M-d HH:mm";
+
+
+        footer.REFRESH_FOOTER_PULLING = "上拉加载更多";
+        footer.REFRESH_FOOTER_RELEASE = "释放立即加载";
+        footer.REFRESH_FOOTER_LOADING = "正在加载...";
+        footer.REFRESH_FOOTER_REFRESHING = "正在刷新...";
+        footer.REFRESH_FOOTER_FINISH = "加载完成";
+        footer.REFRESH_FOOTER_FAILED = "加载失败";
+        footer.REFRESH_FOOTER_NOTHING = "没有更多数据了";
     }
 
     protected abstract RecyclerView.LayoutManager createLayoutManager();
